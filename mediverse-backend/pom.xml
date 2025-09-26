@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mediverse</groupId>
+  <artifactId>mediverse-backend</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Mediverse Backend Parent</name>
+
+  <modules>
+    <module>ai-doctor-co-pilot-service</module>
+    <module>appointment-scheduling-service</module>
+    <module>big-data-research-hub-service</module>
+    <module>billing-payments-service</module>
+    <module>blockchain-health-ledger-service</module>
+    <module>community-support-groups-service</module>
+    <module>compliance-audit-service</module>
+    <module>critical-alert-service</module>
+    <module>doctor-profile-credentialing-service</module>
+    <module>drug-research-clinical-trials-service</module>
+    <module>e-prescription-service</module>
+    <module>ehr-service</module>
+    <module>emergency-dispatch-service</module>
+    <module>epidemic-tracking-service</module>
+    <module>health-wellness-coaching-service</module>
+    <module>healthcare-analytics-service</module>
+    <module>home-monitoring-service</module>
+    <module>hospital-resource-management-service</module>
+    <module>identity-access-management-service</module>
+    <module>insurance-claims-service</module>
+    <module>inventory-supply-chain-service</module>
+    <module>lab-order-results-service</module>
+    <module>medical-imaging-service</module>
+    <module>patient-digital-twin-service</module>
+    <module>patient-identity-profile-service</module>
+    <module>pharmacy-fulfillment-service</module>
+    <module>vaccination-service</module>
+    <module>virtual-consultation-service</module>
+  </modules>
+
+  <properties>
+    <java.version>17</java.version>
+    <spring.boot.version>3.3.1</spring.boot.version>
+    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Spring Boot BOM -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Compiler Plugin -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+          </configuration>
+        </plugin>
+
+        <!-- Spring Boot Plugin -->
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
+
+</project>
