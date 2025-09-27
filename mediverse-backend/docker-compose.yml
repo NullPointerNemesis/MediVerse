@@ -1,5 +1,7 @@
-version: '3.8'
+version: "3.9"
+
 services:
+  # ------------------ Zookeeper for Kafka ------------------
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     environment:
@@ -8,6 +10,7 @@ services:
     networks:
       - mediaverse-net
 
+  # ------------------ Kafka ------------------
   kafka:
     image: confluentinc/cp-kafka:7.4.0
     depends_on:
@@ -16,12 +19,13 @@ services:
       - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - mediaverse-net
 
+  # ------------------ PostgreSQL ------------------
   postgres:
     image: postgres:15-alpine
     environment:
@@ -35,6 +39,7 @@ services:
     networks:
       - mediaverse-net
 
+  # ------------------ MongoDB ------------------
   mongo:
     image: mongo:6.0
     ports:
@@ -44,6 +49,7 @@ services:
     networks:
       - mediaverse-net
 
+  # ------------------ RabbitMQ ------------------
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -52,9 +58,11 @@ services:
     networks:
       - mediaverse-net
 
+  # ------------------ AI Doctor Co-Pilot Service ------------------
   ai-doctor-co-pilot-service:
     build:
       context: ./ai-doctor-co-pilot-service
+      dockerfile: Dockerfile
     container_name: ai_doctor_co_pilot_service
     ports:
       - "8081:8081"
@@ -63,7 +71,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/ai_doctor_co_pilot_service
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
     depends_on:
@@ -73,6 +81,19 @@ services:
       - rabbitmq
     networks:
       - mediaverse-net
+
+  # ------------------ Example Other Service ------------------
+  big-data-research-hub-service:
+    build:
+      context: ./big-data-research-hub-service
+      dockerfile: Dockerfile
+    container_name: big_data_research_hub_service
+    ports:
+      - "8083:8083"
+    networks:
+      - mediaverse-net
+
+# Add other services similarly
 
 networks:
   mediaverse-net:

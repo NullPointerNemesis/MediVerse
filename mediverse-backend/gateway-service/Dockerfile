@@ -1,20 +1,27 @@
-# Stage 1: Build the jar
+# ------------------ Stage 1: Build ------------------
 FROM maven:3.9.3-eclipse-temurin-17 AS build
+
 WORKDIR /app
 
-# Copy only pom first for caching
+# Copy only pom.xml first to leverage Docker cache
 COPY pom.xml .
+
+# Copy source code
 COPY src ./src
 
-# Build the jar, skip tests to speed up
+# Package the application
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run the jar
+# ------------------ Stage 2: Run ------------------
 FROM eclipse-temurin:17-jdk-alpine
+
 WORKDIR /app
 
-# Copy jar from build stage
+# Copy the built jar from the previous stage
 COPY --from=build /app/target/*.jar app.jar
 
-EXPOSE 9090
+# Expose the gateway port (default 8080)
+EXPOSE 8080
+
+# Run the jar
 ENTRYPOINT ["java","-jar","app.jar"]

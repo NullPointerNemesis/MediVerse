@@ -17,6 +17,7 @@
 
   <properties>
     <java.version>17</java.version>
+    <spring-boot.version>3.2.2</spring-boot.version> <!-- specify Spring Boot version -->
   </properties>
 
   <dependencies>
@@ -38,11 +39,11 @@
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
 
-    <!-- JPA for relational data -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+<!--    &lt;!&ndash; JPA for relational data &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--    </dependency>-->
 
     <!-- PostgreSQL driver -->
     <dependency>
@@ -72,11 +73,23 @@
 
   <build>
     <plugins>
-      <!-- Spring Boot plugin -->
+      <!-- Spring Boot Maven plugin to create executable JAR -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <configuration>
+          <mainClass>com.mediVerse.healthcare.aidoctorcopilotservice.AiDoctorCoPilotServiceApplication</mainClass>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
+
     </plugins>
   </build>
 </project>
