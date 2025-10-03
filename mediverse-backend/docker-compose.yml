@@ -93,6 +93,28 @@ services:
     networks:
       - mediaverse-net
 
+  # ------------------ Appointment Scheduling Service ------------------
+  appointment-scheduling-service:
+    build:
+      context: ./appointment-scheduling-service
+      dockerfile: Dockerfile
+    container_name: appointment_scheduling_service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mediaverse
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+    depends_on:
+      - postgres
+      - kafka
+      - rabbitmq
+    networks:
+      - mediaverse-net
+
 # Add other services similarly
 
 networks:
