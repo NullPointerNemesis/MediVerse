@@ -124,20 +124,13 @@ services:
     ports:
       - "8084:8084"
     environment:
-      # PostgreSQL (transactions, invoices, etc.)
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mediaverse
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-
-      # MongoDB (optional, for flexible schema like receipts, audit logs)
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/mediaverse
-
-      # Messaging
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
-
-      # Service name
       SPRING_APPLICATION_NAME: billing-payments-service
     depends_on:
       - postgres
@@ -147,9 +140,32 @@ services:
     networks:
       - mediaverse-net
 
+  # ------------------ Blockchain Health Ledger Service ------------------
+  blockchain-health-ledger-service:
+    build:
+      context: ./blockchain-health-ledger-service
+      dockerfile: Dockerfile
+    container_name: blockchain_health_ledger_service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mediaverse
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/mediaverse
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_APPLICATION_NAME: blockchain-health-ledger-service
+    depends_on:
+      - postgres
+      - mongo
+      - kafka
+      - rabbitmq
+    networks:
+      - mediaverse-net
 
-# Add other services similarly
-
+# ------------------ Networks & Volumes ------------------
 networks:
   mediaverse-net:
     driver: bridge
